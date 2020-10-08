@@ -1,3 +1,7 @@
+'use strict'
+
+const path = require('path')
+
 const config = {
   projectName: 'e-shop',
   date: '2020-9-30',
@@ -17,6 +21,13 @@ const config = {
     ],
     options: {
     }
+  },
+  alias: {
+    'common': path.resolve(__dirname, '..', 'src/common'),
+    'schema': path.resolve(__dirname, '..', 'src/schema'),
+    'assets': path.resolve(__dirname, '..', 'src/assets'),
+    'conttainers': path.resolve(__dirname, '..', 'src/conttainers'),
+    '&': path.resolve(__dirname, '..', 'src'),
   },
   framework: 'react',
   mini: {

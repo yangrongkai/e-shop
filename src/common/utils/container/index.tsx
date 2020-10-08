@@ -1,0 +1,1 @@
+export { ComponentFilter } from './pageFilter'
