@@ -1,17 +1,19 @@
 'use strict'
 
 
-import { localStorage } from './sessionStorage';
+import { taroStorage } from './taroStorage';
 
 
 export class StorageConstant {
 
     name: string;
     fields: string[];
+    storage: any;
 
-    constructor(name: string, fields: string[]){
+    constructor(name: string, fields: string[], storage: any){
         this.name = name;
         this.fields = fields;
+        this.storage = storage
     }
 
     save(data: any){
@@ -24,15 +26,15 @@ export class StorageConstant {
                 throw new Error("lost constant field!");
             }
         }
-        localStorage.sync(this.name, result);
+        this.storage.sync(this.name, result);
     }
 
     get(): any{
-        return localStorage.load(this.name);
+        return this.storage.load(this.name);
     }
 
     remove(){
-        localStorage.remove(this.name);
+        this.storage.remove(this.name);
     }
 
 }
@@ -48,5 +50,6 @@ export const TokenConstant: StorageConstant = new StorageConstant(
         TokenEnum.ACCESS_TOKEN, 
         TokenEnum.RENEW_FLAG, 
         TokenEnum.EXPIRE_TIME
-    ]
+    ],
+    taroStorage
 );

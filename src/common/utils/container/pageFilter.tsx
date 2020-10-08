@@ -1,11 +1,12 @@
 'use strict'
 
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import Taro from '@tarojs/taro'
 import { apiRouter } from 'common/api/register'
 import { TokenConstant, TokenEnum  } from 'common/utils/persistence'
 import { config as globalConfig } from  '&/config.js'
+
 
 export interface ComponentApiRegister {
     [key: string]: string | string[];
@@ -15,7 +16,6 @@ export interface ComponentConfig {
     isAuth?: boolean;
     apiRegister: ComponentApiRegister;
 }
-
 
 const hungApis: any = (apiRegister: ComponentApiRegister) => {
     let apis: any = {}
@@ -39,10 +39,18 @@ const hungApis: any = (apiRegister: ComponentApiRegister) => {
             } else {
                 api = apiParams
             }
-            apis[key] = apiRouter.router(
-                flag,
-                api
-            )
+            let apiExec: any = apiRouter.router(flag, api)
+            apis[key] = (params: any, other: any) => {
+                return apiExec.request(params, other).then(
+                    (res: any) => {
+                        return res
+                    }
+                ).catch(
+                    (res: any) => {
+                        throw res
+                    }
+                )
+            }
         }
     }
     return apis
@@ -80,11 +88,13 @@ export const ComponentFilter = (Component: any, config: ComponentConfig = undefi
         ref
     ) => {
 
-        if(!authorizeToken(config.isAuth)){
-            Taro.redirectTo({
-                url: '/containers/base/login/index'
-            })
-        }
+        useEffect(() => {
+            if(!authorizeToken(config.isAuth)){
+                Taro.redirectTo({
+                    url: '/containers/base/login/index'
+                })
+            }
+        })
 
         return (
             <Component {...apis}/>

@@ -4,6 +4,7 @@
 import React, { Component } from 'react'
 import { View, Text } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
+import { ComponentFilter } from 'common/utils/container'
 
 import './index.less'
 
@@ -21,4 +22,12 @@ export const myself: React.FC<MyselfProps>  = (props, ref) => {
   )
 }
 
-export default myself;
+export default ComponentFilter(
+    myself,
+    {
+        key: 'myself',
+        isAuth: true,
+        apiRegister: {
+        }
+    },
+);

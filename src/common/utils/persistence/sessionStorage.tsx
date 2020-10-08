@@ -3,7 +3,7 @@
 import { BaseStorage } from './base'
 
 
-export class LocalStorage extends BaseStorage {
+export class SessionStorage extends BaseStorage {
     storage: any;
 
     constructor(){
@@ -26,4 +26,4 @@ export class LocalStorage extends BaseStorage {
 
 }
 
-export const localStorage = new LocalStorage();
+export const sessionStorage = new SessionStorage();

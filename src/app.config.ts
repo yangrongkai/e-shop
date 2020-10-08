@@ -20,13 +20,13 @@ export default {
     borderStyle: 'black',
     list: [{
       pagePath: "containers/pages/home/index",
-      iconPath: "/assets/image/app/myself-tornado-back-icon.svg",
-      selectedIconPath: "/assets/image/app/myself-tornado-front-icon.svg",
+      iconPath: "./assets/image/app/myself-tornado-back-icon.png",
+      selectedIconPath: "./assets/image/app/myself-tornado-front-icon.png",
       text: "购物风"
     }, {
       pagePath: "containers/pages/myself/index",
-      iconPath: "/assets/image/app/home-back-icon.svg",
-      selectedIconPath: "/assets/image/app/home-front-icon.svg",
+      iconPath: "./assets/image/app/home-back-icon.png",
+      selectedIconPath: "./assets/image/app/home-front-icon.png",
       text: "我的"
     }]
   }

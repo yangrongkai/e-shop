@@ -1,8 +1,7 @@
 'use strict'
 
 
-import * as config from '&/config.js';
-// import { message } from 'antd';
+import { config } from '&/config.js';
 import { HttpRequest } from 'common/utils/channel/http';
 import { signatureHelper } from 'common/api/tools';
 import { ApiFieldHelper, ApiFieldSet } from 'common/api/fieldSet';

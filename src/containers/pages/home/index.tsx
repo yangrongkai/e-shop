@@ -1,7 +1,7 @@
 'use strict'
 
 
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 import { View, Text } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { AtButton } from 'taro-ui'
@@ -18,11 +18,20 @@ interface HomeProps {
 
 const home: React.FC<HomeProps>  = (props, ref) => {
 
-  return (
-      <View className='index'>
-        这是首页
-      </View>
-  )
+    const [count, setCount] = useState<number>(0)
+
+    console.log(" i am home --->>>.")
+
+    return (
+        <View className='index'>
+            这是首页
+            <AtButton 
+                onClick={ () =>  setCount(count+1)}
+            >
+                添加 {count}
+            </AtButton>
+        </View>
+    )
 }
 
 export default ComponentFilter(
