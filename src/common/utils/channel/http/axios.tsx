@@ -49,10 +49,12 @@ export class HttpRequest {
                 } else {
                     console.error(msg)
                 }
-            })
-            .catch(( err: any ) => {
-                console.error(msg)
-                throw new Error(msg + "< " + err +" >");
+            }).catch(( err: any ) => {
+                console.error(err)
+                throw {
+                    code: -9999,
+                    msg: "无法链接服务器，请检查网络"
+                }
             })
         
     }
