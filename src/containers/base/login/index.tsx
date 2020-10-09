@@ -9,10 +9,11 @@ import { ComponentFilter } from 'common/utils/container'
 import { TokenConstant, TokenEnum  } from 'common/utils/persistence'
 
 
-import "taro-ui/dist/style/components/message.scss";
+import "taro-ui/dist/style/components/message.scss"
 import "taro-ui/dist/style/components/button.scss"
 import "taro-ui/dist/style/components/input.scss"
 import "taro-ui/dist/style/components/flex.scss"
+import "taro-ui/dist/style/components/article.scss"
 
 import './index.less'
 
@@ -35,7 +36,7 @@ const Login: React.FC<LoginProps>  = (props, ref) => {
                 [TokenEnum.EXPIRE_TIME]: res.expireTime,
                 [TokenEnum.RENEW_FLAG]: res.renewFlag,
             })
-            Taro.redirectTo({
+            Taro.switchTab({
                 url: '/containers/pages/home/index'
             })
         }).catch((res: any) => {
@@ -50,11 +51,13 @@ const Login: React.FC<LoginProps>  = (props, ref) => {
     return (
         <View id="main" >
             <AtMessage />
-            <View className='at-row at-row__justify--center mb40'>
-                <Text className=''>
-                    登录
-                </Text>
-            </View>
+            {process.env.TARO_ENV === 'h5' &&
+                <View className='at-row at-row__justify--center mb40'>
+                    <View className='at-article__h1'>
+                        登录
+                    </View>
+                </View>
+            }
             <View className='at-row at-row__justify--center mb20'>
                 <AtInput
                     name='username'
@@ -68,7 +71,7 @@ const Login: React.FC<LoginProps>  = (props, ref) => {
                     className='at-col at-col-10'
                 />
             </View>
-            <View className='at-row at-row__justify--center mb10'>
+            <View className='at-row at-row__justify--center mb40'>
                 <AtInput
                     name='password'
                     title='密码'
@@ -83,16 +86,19 @@ const Login: React.FC<LoginProps>  = (props, ref) => {
             </View>
             <View className='at-row at-row__justify--center mb40 center'>
                 <View className='at-col at-col-5'>
-                    <a
+                    <View
+                        className='at-article__h3'
                         onClick={ ()=> { console.log('我被点击了') } }
                     >
                         立即注册
-                    </a>
+                    </View>
                 </View>
                 <View className='at-col at-col-2'>
                 </View>
                 <View className='at-col at-col-5'>
-                    <a>忘记密码</a>
+                    <View className="at-article__h3">
+                        忘记密码
+                    </View>
                 </View>
             </View>
             <View className='at-row at-row__justify--center'>

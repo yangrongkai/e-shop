@@ -11,7 +11,11 @@ import axios from 'axios'
 
 export class HttpRequest {
 
-    static get(url: string, msg: string = '网络传输异常', headers: any){
+    static get(
+        url: string,
+        msg: string = '网络传输异常',
+        headers: any
+    ){
         axios.get(url, headers)
             .then(( res: any ) => res.data)
             .catch(( err: any ) => {

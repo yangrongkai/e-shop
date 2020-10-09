@@ -1,4 +1,5 @@
 'use stict'
 
 
-export { HttpRequest } from './tools';
+export { HttpRequest } from './axios';
+export { MiniRequest } from './mini';

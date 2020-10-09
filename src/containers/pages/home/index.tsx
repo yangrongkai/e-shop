@@ -20,8 +20,6 @@ const home: React.FC<HomeProps>  = (props, ref) => {
 
     const [count, setCount] = useState<number>(0)
 
-    console.log(" i am home --->>>.")
-
     return (
         <View className='index'>
             这是首页

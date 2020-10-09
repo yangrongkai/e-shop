@@ -2,7 +2,7 @@
 
 
 import { config } from '&/config.js';
-import { HttpRequest } from 'common/utils/channel/http';
+import { MiniRequest } from 'common/utils/channel/http';
 import { signatureHelper } from 'common/api/tools';
 import { ApiFieldHelper, ApiFieldSet } from 'common/api/fieldSet';
 import { Server } from 'common/api/server'
@@ -17,6 +17,7 @@ export abstract class BaseApi {
     parmsHelper: ApiFieldHelper;
     returnHelper: ApiFieldHelper;
     mockData: any;
+    requestHelper: any;
 
     constructor(
         name: string,
@@ -24,13 +25,15 @@ export abstract class BaseApi {
         description: string = "",
         parmsFmt: ApiFieldSet,
         returnFmt: ApiFieldSet,
-        mockData: any
+        mockData: any,
+        requestHelper = MiniRequest
     ){
         this.name = name;
         this.description = description;
         this.parmsHelper = new ApiFieldHelper(parmsFmt);
         this.returnHelper= new ApiFieldHelper(returnFmt);
         this.mockData = mockData;
+        this.requestHelper = requestHelper;
 
         this.server = server;
         this.accessUrl = this._getApiUrl();
@@ -65,7 +68,13 @@ export abstract class BaseApi {
         }
     }
 
-    _postRequest(params: any, extraParams: any, hearders: any, isQs:boolean=true, isForm:boolean=false){
+    _postRequest(
+        params: any, 
+        extraParams: any,
+        hearders: any, 
+        isQs:boolean=true, 
+        isForm:boolean=false
+    ){
         // 如果转换后的数据以下划线开头，则不进行签名，如： _uploadfiles
         let requestParms = this.parmsHelper.transfer(
             params,
@@ -107,13 +116,13 @@ export abstract class BaseApi {
                 }
             );
         } else {
-            return HttpRequest.post(
+            return this.requestHelper.post(
                 this.accessUrl,
                 request,
                 hearders,
                 isQs,
                 isForm
-            ).then( (res) => {
+            ).then( (res: any) => {
                 let { isSuccess, result } = this._parseResponseHeader(res)
                 if( !isSuccess ){
                     throw result;
