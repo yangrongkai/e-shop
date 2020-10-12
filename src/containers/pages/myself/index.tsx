@@ -2,20 +2,12 @@
 
 
 import React, { Component } from 'react'
+import Taro from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtAvatar, AtCard, AtGrid, AtList, AtListItem, AtButton } from 'taro-ui'
 import { ComponentFilter } from 'common/utils/container'
 
-import "taro-ui/dist/style/components/flex.scss";
-import "taro-ui/dist/style/components/article.scss";
-import "taro-ui/dist/style/components/avatar.scss";
-import "taro-ui/dist/style/components/card.scss";
-import "taro-ui/dist/style/components/grid.scss";
-import "taro-ui/dist/style/components/list.scss";
-import "taro-ui/dist/style/components/icon.scss";
-
-
-import './index.less'
+import './index.scss'
 
 
 interface MyselfProps {
@@ -24,6 +16,12 @@ interface MyselfProps {
 
 export const myself: React.FC<MyselfProps>  = (props, ref) => {
 
+    const goToEditPerson = () => {
+        Taro.navigateTo({
+            url: '/containers/modules/person/edit/index'
+        })
+    }
+
     return (
         <View id='myself-main'>
             <View id="myself-main-header" className='at-row'>
@@ -31,7 +29,7 @@ export const myself: React.FC<MyselfProps>  = (props, ref) => {
                         circle={true}
                         image="http://storage.360buyimg.com/mtd/home/32443566_635798770100444_2113947400891531264_n1533825816008.jpg"
                     ></AtAvatar>
-                <Text className="at-article__h2">
+                <Text className="at-article__h2" onClick={goToEditPerson}>
                     小狗爸爸
                 </Text>
             </View>

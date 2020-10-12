@@ -3,10 +3,13 @@
 
 import React, { useEffect } from 'react'
 import Taro from '@tarojs/taro'
+import { View } from '@tarojs/components'
+import { AtMessage } from 'taro-ui'
 import { apiRouter } from 'common/api/register'
 import { TokenConstant, TokenEnum  } from 'common/utils/persistence'
 import { config as globalConfig } from  '&/config.js'
 
+import "taro-ui/dist/style/components/message.scss"
 
 export interface ComponentApiRegister {
     [key: string]: string | string[];
@@ -90,14 +93,24 @@ export const ComponentFilter = (Component: any, config: ComponentConfig = undefi
 
         useEffect(() => {
             if(!authorizeToken(config.isAuth)){
-                Taro.redirectTo({
-                    url: '/containers/base/login/index'
+                Taro.atMessage({
+                    message: "访问令牌已经失效，请重新登录",
+                    type: "error",
+                    duration: 2000
                 })
+                setTimeout(() => {
+                    Taro.redirectTo({
+                        url: '/containers/base/login/index'
+                    })
+                }, 2000)
             }
         })
 
         return (
-            <Component {...apis}/>
+            <View>
+                <AtMessage />
+                <Component {...apis}/>
+            </View>
         )
     }
     return wrapper

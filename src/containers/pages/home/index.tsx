@@ -9,7 +9,7 @@ import { ComponentFilter } from 'common/utils/container'
 
 import "taro-ui/dist/style/components/button.scss" // 按需引入
 
-import './index.less'
+import './index.scss'
 
 
 interface HomeProps {

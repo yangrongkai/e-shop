@@ -9,13 +9,7 @@ import { ComponentFilter } from 'common/utils/container'
 import { TokenConstant, TokenEnum  } from 'common/utils/persistence'
 
 
-import "taro-ui/dist/style/components/message.scss"
-import "taro-ui/dist/style/components/button.scss"
-import "taro-ui/dist/style/components/input.scss"
-import "taro-ui/dist/style/components/flex.scss"
-import "taro-ui/dist/style/components/article.scss"
-
-import './index.less'
+import './index.scss'
 
 
 interface LoginProps {
