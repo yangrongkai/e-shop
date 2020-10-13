@@ -1,14 +1,14 @@
 #myself-main {
+
     padding: 5%;
-    height: 100%;
     background: #fafafa;
 
     #myself-main-header {
         margin-top: 5px;
-        margin-bottom: 15px;
+        margin-bottom: 25px;
     }
 
-    .myself-card {
+    .card-content {
         margin-top: 5px;
         margin-bottom: 20px;
 
@@ -30,6 +30,29 @@
 
     .list-content {
         border-radius: 5px;
+        margin-bottom: 20px;
+        
+        .at-list {
+            &__item:last-child {
+                &::after {
+                    border: none;
+                }
+            }
+            &::after{
+                border: none;
+            }
+        }
+    }
+
+    .foot {
+        background: #ffffff;
+        border: none;
+        margin-top: 25px;
+        margin-bottom: 25px;
+        
+        .logout {
+            border: none;
+        }
     }
 
 }

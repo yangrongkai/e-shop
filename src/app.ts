@@ -3,6 +3,7 @@
 
 import { Component } from 'react'
 import 'taro-ui/dist/style/index.scss'
+import 'taro-skeleton/dist/index.css'
 import './app.less'
 
 class App extends Component {

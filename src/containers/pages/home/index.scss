@@ -1,0 +1,35 @@
+.skeleton {
+    padding: 15px 3% 5px 3%;
+}
+
+.skeleton-content{
+    padding:0px;
+}
+
+.skeleton-row  {
+}
+
+.search {
+    .skeleton-content {
+        .skeleton-row  {
+            border-radius: 100px;
+        }
+    }
+
+    .skeleton-action {
+        height: 50px;
+        width: 80px;
+        border-radius: 30px;
+        margin-left: 10px;
+    }
+}
+
+.goods {
+    .skeleton-content {
+        .skeleton-row  {
+            margin: 15px 15px;
+            border-radius: 20px;
+        }
+    }
+
+}
