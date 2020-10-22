@@ -1,0 +1,26 @@
+@import 'assets/style/index.scss';
+@import "~taro-ui/dist/style/components/list.scss";
+@import "~taro-ui/dist/style/components/icon.scss";
+@import "~taro-ui/dist/style/components/modal.scss";
+
+
+#edit-person {
+
+    #edit-person-content {
+        padding: 15px 0px 5px 0px;
+
+        >taro-view-core {
+            margin-bottom: 50px;
+        }
+
+        .at-list {
+            border: red;
+
+            &:after {
+                border: none;
+            }
+        }
+
+    }
+
+}

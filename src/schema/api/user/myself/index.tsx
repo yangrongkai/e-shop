@@ -2,22 +2,22 @@
 
 
 import moment from 'moment';
-import { ApiInterface } from 'common/interface';
+import { ApiInterface } from 'common/interfaces';
 import * as fields from 'common/api/fields';
 import * as api from 'common/api/core';
 
 
 export const myselfApi: ApiInterface[] = [
     { 
-        name: "staff.myself.get", 
+        name: "customer.myself.get", 
         descriptions: "get myself information",
-        servers: ["controller-pc"],
+        servers: ["customer-mobile"],
         type: api.ControllerApi,
         request: {
         },
         response: {
-            staff_info:{
-                transfer: 'staffInfo',
+            customer_info:{
+                transfer: 'customerInfo',
                 dict:{
                     id: {
                         transfer: 'id',
@@ -63,32 +63,6 @@ export const myselfApi: ApiInterface[] = [
                         transfer: "permission",
                         type: fields.JsonField
                     },
-                    organization: {
-                        transfer: "organization",
-                        dict: {
-                            id: {
-                                transfer: "id",
-                                type: fields.IntField
-                            },
-                            name: {
-                                transfer: "name",
-                                type: fields.StringField
-                            },
-                        },
-                    },
-                    position: {
-                        transfer: "position",
-                        dict: {
-                            id: {
-                                transfer: "id",
-                                type: fields.IntField
-                            },
-                            name: {
-                                transfer: "name",
-                                type: fields.StringField
-                            },
-                        },
-                    },
                     account_info:{
                         transfer: "account",
                         dict:{
@@ -130,27 +104,6 @@ export const myselfApi: ApiInterface[] = [
                             },
                         }
                     },
-                    company_info:{
-                        transfer: "company",
-                        dict:{
-                            id: {
-                                transfer: 'id',
-                                type: fields.IntField
-                            },
-                            name: {
-                                transfer: "name",
-                                type: fields.StringField
-                            },
-                            license_number: {
-                                transfer: "licenseNumber",
-                                type: fields.StringField
-                            },
-                            create_time: {
-                                transfer: "creaetTime",
-                                type: fields.DatetimeField
-                            },
-                        }
-                    }
                 }
             }
         },
@@ -203,9 +156,9 @@ export const myselfApi: ApiInterface[] = [
         }
     },
     { 
-        name: "staff.myself.update", 
+        name: "customer.myself.update", 
         descriptions: "get myself information",
-        servers: ["controller-pc"],
+        servers: ["customer-mobile"],
         type: api.ControllerApi,
         request: {
             myselfInfo:{

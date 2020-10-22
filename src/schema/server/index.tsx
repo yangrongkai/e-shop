@@ -1,11 +1,11 @@
 'use strict'
 
-import { ServerInterface } from 'common/interface';
+import { ServerInterface } from 'common/interfaces';
 
 
 export const serverConfig: ServerInterface[] = [
     {
-        flag: 'controller-pc',
+        flag: 'customer-mobile',
         url: "http://192.168.0.104:8011/interface/",
         description: "中台系统服务"
     },

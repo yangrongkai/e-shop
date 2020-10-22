@@ -4,11 +4,13 @@
 import React, { useEffect } from 'react'
 import Taro from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { AtMessage } from 'taro-ui'
+import { AtNavBar, AtMessage } from 'taro-ui'
 import { apiRouter } from 'common/api/register'
 import { TokenConstant, TokenEnum  } from 'common/utils/persistence'
 import { config as globalConfig } from  '&/config.js'
 
+import "assets/style/index.scss"
+import "taro-ui/dist/style/components/nav-bar.scss";
 import "taro-ui/dist/style/components/message.scss"
 
 export interface ComponentApiRegister {
@@ -16,16 +18,19 @@ export interface ComponentApiRegister {
 }
 export interface ComponentConfig {
     key: string;
+    title?: string;
     isAuth?: boolean;
+    needNavBar?: boolean;
     apiRegister: ComponentApiRegister;
 }
 
+const APIErrorCodes = [30007, 30008, 30009]
 const hungApis: any = (apiRegister: ComponentApiRegister) => {
     let apis: any = {}
     if( apiRegister !== undefined ){
         for(let key in apiRegister){
             let apiParams = apiRegister[key]
-            let flag: string = globalConfig.defaultFlag 
+            let flag: string = globalConfig.default.serverFlag 
             let api: string = ""
             if( typeof(apiParams) !== "string" ) {
                 if(apiParams.length && apiParams.length> 0){
@@ -50,6 +55,18 @@ const hungApis: any = (apiRegister: ComponentApiRegister) => {
                     }
                 ).catch(
                     (res: any) => {
+                        Taro.atMessage({
+                            message: res.msg,
+                            type: "error",
+                            duration: 2000
+                        })
+                        if( APIErrorCodes.indexOf(parseInt(res.code)) > -1 ){
+                            setTimeout(() => {
+                                Taro.reLaunch({
+                                    url: globalConfig.default.loginRouter,
+                                })
+                            }, 2000)
+                        }
                         throw res
                     }
                 )
@@ -99,16 +116,37 @@ export const ComponentFilter = (Component: any, config: ComponentConfig = undefi
                     duration: 2000
                 })
                 setTimeout(() => {
-                    Taro.redirectTo({
-                        url: '/containers/base/login/index'
+                    Taro.reLaunch({
+                        url: globalConfig.default.loginRouter,
                     })
                 }, 2000)
             }
         })
 
+        const callBack = () => {
+            Taro.navigateBack({
+                delta: 1
+            })
+        }
+
         return (
             <View>
                 <AtMessage />
+                { config.needNavBar && process.env.TARO_ENV === 'h5' && 
+                    <View>
+                        <AtNavBar
+                          onClickRgIconSt={callBack}
+                          onClickRgIconNd={callBack}
+                          onClickLeftIcon={callBack}
+                          color='#000'
+                          leftText='返回'
+                        >
+                            <View id='person-edit-main'>
+                                {config.title}
+                            </View>
+                        </AtNavBar>
+                    </View>
+                }
                 <Component {...apis}/>
             </View>
         )

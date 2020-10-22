@@ -1,7 +1,7 @@
 'use strict'
 
 
-import { ApiInterface } from 'common/interface';
+import { ApiInterface } from 'common/interfaces';
 import { accountApi } from './account';
 import { myselfApi } from './myself';
 

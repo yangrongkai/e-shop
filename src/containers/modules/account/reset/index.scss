@@ -1,0 +1,28 @@
+@import 'assets/style/index.scss';
+@import "~taro-ui/dist/style/components/input.scss";
+@import "~taro-ui/dist/style/components/icon.scss";
+@import "~taro-ui/dist/style/components/button.scss";
+@import "~taro-ui/dist/style/components/loading.scss";
+
+
+#reset-password-main {
+
+    &-input {
+        &-old {
+            margin-top: $spacing-v-xxl * 2;
+            margin-bottom: $spacing-v-xl;
+        }
+
+        &-new {
+            margin-top: $spacing-v-xxl;
+            margin-bottom: $spacing-v-xl * 2;
+        }
+    }
+
+    &-operation {
+    }
+
+    .at-input {
+        background-color: $color-bg-base;
+    }
+}

@@ -1,115 +1,38 @@
 'use strict'
 
 
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
 import Taro from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
-import { AtAvatar, AtCard, AtGrid, AtList, AtListItem, AtButton } from 'taro-ui'
+import { View, Text, Button } from '@tarojs/components'
+import { 
+    AtModal,
+    AtAvatar,
+    AtCard,
+    AtGrid,
+    AtList,
+    AtListItem,
+    AtButton
+} from 'taro-ui'
 import { ComponentFilter } from 'common/utils/container'
+import { TokenConstant, TokenEnum  } from 'common/utils/persistence'
+import { config } from  '&/config.js'
+
+import { CardContent, cardContentList } from './card'
+import { ListItemContent, ListContent, listContentList } from './list'
 
 import './index.scss'
 
-interface GridContent {
-    image: string;
-    value: string;
-    router?: string;
-}
-
-interface CardContent {
-    title: string;
-    itemList: GridContent[]
-}
-
-interface ListItemContent {
-    title: string;
-    thumb: string;
-    router?: string;
-}
-
-interface ListContent {
-    itemList: ListItemContent[]
-}
 
 interface MyselfProps {
-
+    logout: any;
+    getAccount: any;
 }
 
-const cardContentList: CardContent[] = [
-    {
-        title: "我的钱包",
-        itemList: [
-            {
-                image: 'https://img20.360buyimg.com/jdphoto/s72x72_jfs/t15151/308/1012305375/2300/536ee6ef/5a411466N040a074b.png',
-                value: '我的余额'
-            },
-            {
-                image: 'https://img10.360buyimg.com/jdphoto/s72x72_jfs/t5872/209/5240187906/2872/8fa98cd/595c3b2aN4155b931.png',
-                value: '我的充值'
-            },
-            {
-                image: 'https://img12.360buyimg.com/jdphoto/s72x72_jfs/t10660/330/203667368/1672/801735d7/59c85643N31e68303.png',
-                value: '我的账单'
-            },
-        ]
-    },
-    {
-        title: "我的订单",
-        itemList: [
-            {
-                image: 'https://img12.360buyimg.com/jdphoto/s72x72_jfs/t6160/14/2008729947/2754/7d512a86/595c3aeeNa89ddf71.png',
-                value: '未支付',
-                router: '1',
-            },
-            {
-                image: 'https://img20.360buyimg.com/jdphoto/s72x72_jfs/t15151/308/1012305375/2300/536ee6ef/5a411466N040a074b.png',
-                value: '待收货',
-            },
-            {
-                image: 'https://img10.360buyimg.com/jdphoto/s72x72_jfs/t5872/209/5240187906/2872/8fa98cd/595c3b2aN4155b931.png',
-                value: '已完成',
-            },
-            {
-                image: 'https://img12.360buyimg.com/jdphoto/s72x72_jfs/t10660/330/203667368/1672/801735d7/59c85643N31e68303.png',
-                value: '全部订单,'
-            },
-        ]
-    },
-]
-
-const listContentList: ListContent[] = [
-    {
-        itemList: [
-            {
-                title: '银行卡管理',
-                thumb: 'https://img12.360buyimg.com/jdphoto/s72x72_jfs/t6160/14/2008729947/2754/7d512a86/595c3aeeNa89ddf71.png',
-                router: '1',
-            },
-            {
-                title: '地址管理',
-                thumb: 'https://img12.360buyimg.com/jdphoto/s72x72_jfs/t6160/14/2008729947/2754/7d512a86/595c3aeeNa89ddf71.png',
-                router: '2',
-            },
-        ]
-    },
-    {
-        itemList: [
-            {
-                title: '账户安全',
-                thumb: 'https://img12.360buyimg.com/jdphoto/s72x72_jfs/t6160/14/2008729947/2754/7d512a86/595c3aeeNa89ddf71.png',
-            },
-            {
-                title: '关于我们',
-                thumb: 'https://img12.360buyimg.com/jdphoto/s72x72_jfs/t6160/14/2008729947/2754/7d512a86/595c3aeeNa89ddf71.png',
-            },
-            {
-                title: '意见反馈',
-                thumb: 'https://img12.360buyimg.com/jdphoto/s72x72_jfs/t6160/14/2008729947/2754/7d512a86/595c3aeeNa89ddf71.png',
-            },
-        ]
-    },
-]
-
 export const myself: React.FC<MyselfProps>  = (props, ref) => {
+
+    const [nick, setNick] = useState<string>(config.default.nick)
+    const [headUrl, setHeadUrl]= useState<string>(config.default.headUrl)
+    const [isRemind, setRemindState] = useState<boolean>(false)
 
     const goToEditPerson = () => {
         Taro.navigateTo({
@@ -117,12 +40,52 @@ export const myself: React.FC<MyselfProps>  = (props, ref) => {
         })
     }
 
+    const goToResetPassword  = () => {
+        Taro.navigateTo({
+            url: '/containers/modules/account/reset/index'
+        }).then(
+            () => {
+                setRemindState(false)
+            }
+        )
+    }
+
+    useEffect(
+        () => {
+            let tokenInfo = TokenConstant.get()
+            if(
+                tokenInfo !== undefined &&
+                tokenInfo[TokenEnum.ACCESS_TOKEN] !== undefined
+            ) {
+                props.getAccount({
+                }).then(
+                    (res: any) => {
+                        res.nick !== "" && setNick(res.nick)
+                        res.headUrl !== "" && setHeadUrl(res.headUrl)
+                        setRemindState(res.blankPassword)
+                    }
+                )
+            }
+        }, []
+    )
+
+    const logout = () => {
+        props.logout({})
+        TokenConstant.remove()
+        Taro.reLaunch({
+            url: config.default.loginRouter,
+        })
+    }
+
     const cardContents = cardContentList.map(
         (cardContent: CardContent) => {
-            const clickGrid = (value: any) => {
+            const clickGrid = (item: any) => {
+                Taro.navigateTo({
+                    url: item.router
+                })
             }
             return (
-                <View className="card-content">
+                <View className="card-content" key={cardContent.key}>
                     <AtCard 
                         className='at-article__h1'
                         title={cardContent.title}
@@ -146,10 +109,13 @@ export const myself: React.FC<MyselfProps>  = (props, ref) => {
             const listContents = listContent.itemList.map(
                 (item: ListItemContent) => {
                     let clickItem = (value: any) => {
-
+                        Taro.navigateTo({
+                            url: item.router
+                        })
                     }
                     return (
                         <AtListItem
+                            key={listContent.key + item.router}
                             title={item.title}
                             arrow='right'
                             thumb={item.thumb}
@@ -159,8 +125,8 @@ export const myself: React.FC<MyselfProps>  = (props, ref) => {
                 }
             )
             return (
-                <View className='list-content'>
-                    <AtList>
+                <View className='list-content' key={listContent.key}>
+                    <AtList >
                         {listContents}
                     </AtList>
                 </View>
@@ -170,20 +136,40 @@ export const myself: React.FC<MyselfProps>  = (props, ref) => {
 
     return (
         <View id='myself-main'>
+            <View id="myself-main-remind">
+                <AtModal 
+                    isOpened={isRemind}
+                    onClose={ () => { setRemindState(false) } } 
+                    onCancel={ () => { setRemindState(false) } }
+                    onConfirm={ goToResetPassword }
+                    content="您还未设置账号密码，是否前去设置 ^_^!"
+                    cancelText="取消"
+                    confirmText="前去设置"
+                >
+                </AtModal>
+            </View>
             <View id="myself-main-header" className='at-row'>
+                <View
+                    id="myself-main-header-portrait"
+                >
                     <AtAvatar 
                         circle={true}
-                        image="http://storage.360buyimg.com/mtd/home/32443566_635798770100444_2113947400891531264_n1533825816008.jpg"
+                        image={headUrl}
                     ></AtAvatar>
-                <Text className="at-article__h2" onClick={goToEditPerson}>
-                    小狗爸爸
-                </Text>
+                </View>
+                <View 
+                    id="myself-main-header-nick"
+                    onClick={goToEditPerson}
+                >
+                    {nick}
+                </View>
             </View>
             {cardContents}
             {listContents}
             <View className="foot" >
                 <AtButton
                     className="logout"
+                    onClick={logout}
                 >
                     退出登录
                 </AtButton>
@@ -198,6 +184,8 @@ export default ComponentFilter(
         key: 'myself',
         isAuth: true,
         apiRegister: {
+            logout: "customer.account.logout",
+            getAccount: 'customer.account.get',
         }
     },
 );

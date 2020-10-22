@@ -1,0 +1,10 @@
+@import 'assets/style/index.scss';
+
+.verify-phone-code-button {
+    padding: 0px 4px;
+    width: 150px;
+    text-align: center;
+    font-weight: bold;
+    color: $at-button-border-color-primary;
+    font-size: $font-size-base;
+}

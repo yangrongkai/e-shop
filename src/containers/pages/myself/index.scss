@@ -1,16 +1,54 @@
+@import 'assets/style/index.scss';
+@import "~taro-ui/dist/style/components/grid.scss";
+@import "~taro-ui/dist/style/components/button.scss";
+@import "~taro-ui/dist/style/components/loading.scss";
+@import "~taro-ui/dist/style/components/list.scss";
+@import "~taro-ui/dist/style/components/icon.scss";
+@import "~taro-ui/dist/style/components/card.scss";
+@import "~taro-ui/dist/style/components/avatar.scss";
+@import "~taro-ui/dist/style/components/modal.scss";
+
+
 #myself-main {
 
     padding: 5%;
     background: #fafafa;
 
-    #myself-main-header {
-        margin-top: 5px;
-        margin-bottom: 25px;
+    &-remind {
+        text-align: center;
+
+        .content-simple{
+            font-size: $font-size-lg;
+            color: $color-brand-light;
+        }
+
+        taro-button-core {
+            color: $at-button-border-color-secondary;
+        }
+        taro-button-core+taro-button-core {
+            margin: 0px;
+            color: $at-button-border-color-primary;
+        }
+    }
+
+    &-header {
+        margin-top: $spacing-v-xs;
+        margin-bottom: $spacing-v-lg;
+
+        &-portrait {
+
+        }
+
+        &-nick {
+            margin-left: $spacing-h-lg;
+            font-size: $font-size-xl;
+            line-height: $at-avatar-size-md;
+        }
     }
 
     .card-content {
-        margin-top: 5px;
-        margin-bottom: 20px;
+        margin-top: $spacing-v-xs;
+        margin-bottom: $spacing-v-lg;
 
         .at-card {
             margin-left: 0px;
@@ -29,8 +67,8 @@
     }
 
     .list-content {
-        border-radius: 5px;
-        margin-bottom: 20px;
+        border-radius: $border-radius-sm;
+        margin-bottom: $spacing-v-lg;
         
         .at-list {
             &__item:last-child {
@@ -45,10 +83,9 @@
     }
 
     .foot {
-        background: #ffffff;
+        background: $color-bg;
         border: none;
-        margin-top: 25px;
-        margin-bottom: 25px;
+        margin-top: $spacing-v-lg;
         
         .logout {
             border: none;

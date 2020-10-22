@@ -5,19 +5,28 @@ export default {
     pages: [
         'containers/pages/home/index',
         'containers/pages/myself/index',
-        'containers/modules/person/edit/index',
         'containers/base/login/index',
     ],
+    subpackages: [
+        {
+            "root": "containers/modules/",
+            "pages": [
+                "account/reset/index",
+                'person/edit/index',
+            ]
+        }
+    ],
     window: {
+        backgroundColor: '#fafbfc',
         backgroundTextStyle: 'light',
-        navigationBarBackgroundColor: '#fff',
+        navigationBarBackgroundColor: '#fafbfc',
         navigationBarTitleText: 'WeChat',
         navigationBarTextStyle: 'black'
     },
     tabBar: {
         color: "#666",
         selectedColor: "#b4282d",
-        backgroundColor: "#fafafa",
+        backgroundColor: "#fafbfc",
         borderStyle: 'black',
         list: [{
             pagePath: "containers/pages/home/index",

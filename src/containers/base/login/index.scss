@@ -1,35 +1,46 @@
-#main {
-    padding-top: 100px;
+@import 'assets/style/index.scss';
+@import "~taro-ui/dist/style/components/input.scss";
+@import "~taro-ui/dist/style/components/icon.scss";
+@import "~taro-ui/dist/style/components/button.scss";
+@import "~taro-ui/dist/style/components/loading.scss";
+
+
+#login-main {
+    padding-top: 80px;
     padding-bottom: auto;
     margin-left: auto;
     margin-right: auto;
 
-    .mb10 {
-      margin-bottom: 10px;
+    &-header {
+        margin-top: $spacing-v-xl;
+        margin-bottom: $spacing-v-xl;
+        font-size: $font-size-xxl;
+
     }
 
-    .mb20 {
-      margin-bottom: 20px;
+    &-password {
+
     }
 
-    .mb40 {
-      margin-bottom: 40px;
-    }
+    &-sms {
 
-    .center {
-        text-align: center;
-        a {
-            font-size: 28px;
-            color: #6190e8;
-        }
-    }
-
-    .at-article__h3 {
-        color: #6190e8;
     }
 
     .at-input {
-        margin-left: 0px;
+        margin: 0px;
+        background-color: $color-bg-base;
     }
+
+    .submit-button {
+        margin-top: $spacing-h-xl;
+    }
+
+    .transfer-button {
+        margin-top: $spacing-v-xxl;
+        font-size: $font-size-lg;
+        font-weight: bold;
+        color: $at-button-border-color-primary;
+    }
+
 
 }
