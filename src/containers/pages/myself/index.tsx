@@ -60,13 +60,14 @@ export const myself: React.FC<MyselfProps>  = (props, ref) => {
                 props.getAccount({
                 }).then(
                     (res: any) => {
+                        res = res.accountInfo
                         res.nick !== "" && setNick(res.nick)
                         res.headUrl !== "" && setHeadUrl(res.headUrl)
                         setRemindState(res.blankPassword)
                     }
                 )
             }
-        }, []
+        }, [] 
     )
 
     const logout = () => {

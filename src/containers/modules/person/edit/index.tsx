@@ -1,20 +1,18 @@
 'use strict'
 
 
-import React, { useState } from 'react'
-import { View, Text, Button } from '@tarojs/components'
+import React, { useState, useEffect } from 'react'
+import { View, Text, Picker } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { 
     AtList, 
     AtListItem ,
-    AtInput,
-    AtModal,
-    AtModalHeader,
-    AtModalContent,
-    AtModalAction,
 } from 'taro-ui'
 import { ComponentFilter } from 'common/utils/container'
-import { RList } from 'common//ui/components/list'
+import { ItemUpdateModal } from 'common/ui/components/modal'
+import { FloatRadio } from 'common/ui/components/radio'
+import { AddressPicker } from 'common/ui/components/picker'
+import { deepClone } from 'common/utils/tools'
 
 import './index.scss'
 
@@ -22,101 +20,182 @@ import './index.scss'
 
 export interface Attribute {
     name: string;
-    key: string;
+    attr: string;
     value: string;
     needArrow: boolean;
-    type: string;
-    component?: any;
-    apiExec?: any;
+    enumDict?: any;  // 数据字典
+    type?: number;  // Api访问类型
+    component?: any;  // 挂载组件
 }
 
+export enum UpdateType {
+    ACCOUNT,
+    PERSON,
+}
 
 export const attributeModuleList: Attribute[][] = [
     [
         {
             name: "头像",
-            key: "headUrl",
+            attr: "headUrl",
             needArrow: false,
+            component: ItemUpdateModal,
             value: "",
-            type: 'account',
+            type: UpdateType.ACCOUNT,
         },
         {
             name: "昵称",
-            key: "nick",
+            attr: "nick",
             needArrow: true,
+            component: ItemUpdateModal,
             value: "未设置",
-            type: 'account',
+            type: UpdateType.ACCOUNT,
         },
         {
             name: "账号",
-            key: "usename",
+            attr: "username",
             needArrow: false,
-            value: "15527703115",
-            type: 'account',
+            value: "",
+            type: UpdateType.ACCOUNT,
         },
     ],
     [
         {
             name: "性别",
-            key: "gender",
+            attr: "gender",
             needArrow: true,
+            component: FloatRadio,
             value: "man",
-            type: 'person',
+            enumDict: {'man': '男', 'woman': '女'},
+            type: UpdateType.PERSON,
         },
         {
             name: "地区",
-            key: "area",
+            attr: "area",
             needArrow: true,
+            component: AddressPicker,
             value: "未设置",
-            type: 'person',
         },
     ],
 
 ]
 
 interface PersonEditProps {
+    getAccount: any,
+    getPerson: any,
     updateAccount: any,
     updatePerson: any,
 }
 
+
 export const personEdit: React.FC<PersonEditProps>  = (props, ref) => {
-    const [isOpened, setOpenState] = useState<boolean>(false)
-    const [key, setKey] = useState<string>("未设置")
-    const [name, setName] = useState<string>("未设置")
-    const [value, setValue] = useState<string>("")
+    const [openFlag, setOpenFlag] = useState<string>("")
+    const loadingComponents: any[] = []
+    const [personInfo, setPersonInfo] = useState<any>(
+        deepClone(attributeModuleList)
+    )
+
+    const hungAttributeValues = (res: any, attributeTemplate: any[][], updateType: number) => {
+        let newPersonInfo = deepClone(attributeTemplate)
+        for(let key in newPersonInfo){
+            for(let subKey in newPersonInfo[key]){
+                let item = newPersonInfo[key][subKey]
+                if( item.type == updateType && item.attr in res ){
+                    item.value = res[item.attr]
+                }
+            }
+        }
+        return newPersonInfo
+    }
+
+    useEffect(
+        () => {
+            props.getAccount({
+            }).then(
+                (account: any) => {
+                    props.getPerson({
+                    }).then(
+                        (myself: any) => {
+                            let newPersonInfo = personInfo
+                            let updateList = [
+                                [account.accountInfo, UpdateType.ACCOUNT],
+                                [myself.customerInfo, UpdateType.PERSON],
+                            ]
+                            for( let index in updateList ){
+                                let [parms, execType] = updateList[index]
+                                newPersonInfo = hungAttributeValues(parms, newPersonInfo, execType)
+                            }
+                            setPersonInfo(
+                                newPersonInfo
+                            )
+                        }
+                    )
+                }
+            )
+        }, []
+    )
 
     const generateAttribute = (attributeList: Attribute[]) => {
         return attributeList.map(
             (item: Attribute) => {
                 let config:any = {
                     title: item.name,
-                    extraText: item.value,
+                    extraText: item.enumDict ? item.enumDict[item.value]: item.value,
                 }
+
                 if(item.needArrow ) config['arrow'] = "right"
+                if(item.component ) {
+                    let updateComponent = (
+                        <item.component 
+                            isOpened={ item.attr === openFlag }
+                            {...item}
+                            onConfirm={(value: any) => { 
+                                setOpenFlag("")
+                                if(item.type === UpdateType.ACCOUNT) {
+                                    props.updateAccount({
+                                        updateInfo: {
+                                            [item.attr]: value
+                                        }
+                                    })
+                                } else if (item.type === UpdateType.PERSON){
+                                    props.updatePerson({
+                                        myselfInfo: {
+                                            [item.attr]: value
+                                        }
+                                    })
+                                }
+                                setPersonInfo(
+                                    hungAttributeValues({
+                                        [item.attr]: value
+                                    }, personInfo, item.type)
+                                )
+                            }}
+                            
+                            onCancel={() => { setOpenFlag("") }}
+                            onClose={() => { setOpenFlag("") }}
+                        />
+                    )
+                    loadingComponents.push(updateComponent)
+                }
 
                 const invokeComponent = (value: any) => {
-                    setKey(item.key)
-                    setName(item.name)
-                    setValue(item.value)
-                    setOpenState(true)
+                    setOpenFlag(item.attr)
                 }
+
                 return (
                     <AtListItem
                         key={JSON.stringify(item)}
                         {...config}
                         onClick={invokeComponent}
-                        onClose={ () => { setOpenState(false)} }
-                        onCancel={ ()=> { setOpenState(false)} }
                     >
                     </AtListItem>
                 )
             }
         )
-
     }
 
-    const generateAttributeModule = () => {
-        return attributeModuleList.map(
+    const generateAttributeModule = (moduleList: Attribute[][]) => {
+        return moduleList.map(
             (attributeList : Attribute[]) => {
                 let attributeItemList = generateAttribute(attributeList)
                 return (
@@ -124,40 +203,19 @@ export const personEdit: React.FC<PersonEditProps>  = (props, ref) => {
                         {attributeItemList}
                     </AtList>
                 )
-
             }
         )
     }
 
-
-    const updateAttribute = (value: any) => {
-    }
+    let attribuiteComponents = generateAttributeModule(
+        personInfo
+    )
 
     return (
         <View id="edit-person">
             <View id="edit-person-content">
-                {generateAttributeModule()}
-            </View>
-            <View>
-                <AtModal isOpened={isOpened}>
-                    <AtModalHeader>修改{name}</AtModalHeader>
-                    <AtModalContent>
-                        <AtInput
-                            name={key}
-                            title={name}
-                            value={value}
-                        />
-                    </AtModalContent>
-                    <AtModalAction> 
-                        <Button>取消</Button>
-                        <Button
-                            onClick={updateAttribute}
-                        >
-                            确定
-                        </Button>
-                    </AtModalAction>
-                </AtModal>
-            <RList/>
+                {attribuiteComponents}
+                {loadingComponents}
             </View>
         </View>
     )
@@ -171,6 +229,8 @@ export default ComponentFilter(
         isAuth: true,
         needNavBar: true,
         apiRegister: {
+            getAccount: "customer.account.get",
+            getPerson: "customer.myself.get",
             updateAccount: "customer.account.update",
             updatePerson: "customer.myself.update",
         }

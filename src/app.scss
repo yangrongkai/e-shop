@@ -3,8 +3,18 @@
 
 body {
     background: $color-bg-base;
+    width: 100%;
 }
 
 page {
     background: $color-bg-base;
+    width: 100%;
+}
+
+taro-button-core {
+    color: $at-button-border-color-secondary;
+}
+taro-button-core+taro-button-core {
+    margin-top: 0px;
+    color: $at-button-border-color-primary;
 }

@@ -117,21 +117,30 @@ export const accountApi: ApiInterface[] = [
         request: {
         },
         response:{
-            nick: {
-                transfer: 'nick',
-                type: fields.StringField,
-            },
-            head_url: {
-                transfer: 'headUrl',
-                type: fields.StringField,
-            },
-            register_time: {
-                transfer: 'registerTime',
-                type: fields.DatetimeField,
-            },
-            blank_password: {
-                transfer: 'blankPassword',
-                type: fields.BooleanField,
+            account_info:{
+                transfer: 'accountInfo',
+                dict:{
+                    nick: {
+                        transfer: 'nick',
+                        type: fields.StringField,
+                    },
+                    head_url: {
+                        transfer: 'headUrl',
+                        type: fields.StringField,
+                    },
+                    username: {
+                        transfer: 'username',
+                        type: fields.StringField,
+                    },
+                    register_time: {
+                        transfer: 'registerTime',
+                        type: fields.DatetimeField,
+                    },
+                    blank_password: {
+                        transfer: 'blankPassword',
+                        type: fields.BooleanField,
+                    },
+                },
             },
         },
         mock: {

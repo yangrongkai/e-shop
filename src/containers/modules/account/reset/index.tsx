@@ -35,7 +35,9 @@ export const resetPassword: React.FC<ResetPasswordProps>  = (props, ref) => {
 
             }).then(
                 (res: any) => {
-                    setPasswordState(res.blankPassword)
+                    setPasswordState(
+                        res.accountInfo.blankPassword
+                    )
                 }
             )
         }, []

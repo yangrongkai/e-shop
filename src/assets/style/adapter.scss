@@ -1,0 +1,8 @@
+taro-button-core {
+    color: $at-button-border-color-secondary;
+}
+taro-button-core+taro-button-core {
+    margin-top: 0px;
+    color: $at-button-border-color-primary;
+}
+

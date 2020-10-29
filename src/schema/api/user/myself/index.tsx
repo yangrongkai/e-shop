@@ -19,10 +19,6 @@ export const myselfApi: ApiInterface[] = [
             customer_info:{
                 transfer: 'customerInfo',
                 dict:{
-                    id: {
-                        transfer: 'id',
-                        type: fields.IntField
-                    },
                     name: {
                         transfer: "name",
                         type: fields.StringField
@@ -50,59 +46,6 @@ export const myselfApi: ApiInterface[] = [
                     email: {
                         transfer: "email",
                         type: fields.StringField
-                    },
-                    work_number: {
-                        transfer: "workNumber",
-                        type: fields.StringField
-                    },
-                    is_admin: {
-                        transfer: "isAdmin",
-                        type: fields.BooleanField
-                    },
-                    permission: {
-                        transfer: "permission",
-                        type: fields.JsonField
-                    },
-                    account_info:{
-                        transfer: "account",
-                        dict:{
-                            nick: {
-                                transfer: 'nick',
-                                type: fields.StringField
-                            },
-                            username: {
-                                transfer: 'username',
-                                type: fields.StringField
-                            },
-                            head_url: {
-                                transfer: "headUrl",
-                                type: fields.StringField
-                            },
-                            last_login_time: {
-                                transfer: "lastLoginTime",
-                                type: fields.DatetimeField
-                            },
-                            last_login_ip: {
-                                transfer: "lastLoginIp",
-                                type: fields.StringField
-                            },
-                            register_ip: {
-                                transfer: "registerIp",
-                                type: fields.StringField
-                            },
-                            status: {
-                                transfer: "status",
-                                type: fields.StringField
-                            },
-                            update_time: {
-                                transfer: "updateTIme",
-                                type: fields.DatetimeField
-                            },
-                            create_time: {
-                                transfer: "createTime",
-                                type: fields.DatetimeField
-                            },
-                        }
                     },
                 }
             }
@@ -167,31 +110,38 @@ export const myselfApi: ApiInterface[] = [
                 dict:{
                     name: {
                         transfer: "name",
-                        type: fields.StringField
+                        type: fields.StringField,
+                        required: false,
                     },
                     birthday: {
                         transfer: "birthday",
-                        type: fields.DateField
+                        type: fields.DateField,
+                        required: false,
                     },
                     gender: {
                         transfer: "gender",
-                        type: fields.StringField
+                        type: fields.StringField,
+                        required: false,
                     },
                     phone: {
                         transfer: "phone",
-                        type: fields.StringField
+                        type: fields.StringField,
+                        required: false,
                     },
                     email: {
                         transfer: "email",
-                        type: fields.StringField
+                        type: fields.StringField,
+                        required: false,
                     },
                     qq: {
                         transfer: "qq",
-                        type: fields.StringField
+                        type: fields.StringField,
+                        required: false,
                     },
                     wechat: {
                         transfer: "wechat",
-                        type: fields.StringField
+                        type: fields.StringField,
+                        required: false,
                     },
                 }
             }

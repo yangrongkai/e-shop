@@ -8,7 +8,6 @@ module.exports = {
     h5: {
         esnextModules: [
             'taro-ui',
-            'taro-skeleton'
         ]
     }
 }

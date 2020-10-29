@@ -22,13 +22,7 @@
             color: $color-brand-light;
         }
 
-        taro-button-core {
-            color: $at-button-border-color-secondary;
-        }
-        taro-button-core+taro-button-core {
-            margin: 0px;
-            color: $at-button-border-color-primary;
-        }
+        @import 'assets/style/adapter';
     }
 
     &-header {
